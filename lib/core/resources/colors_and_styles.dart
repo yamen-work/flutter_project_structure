@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -37,21 +38,21 @@ const Color whatsappColor = Colors.green;
 
 
 //main color (primary)
-TextStyle mainPrimaryTextStyle =   TextStyle(fontSize: 24 ,fontWeight: FontWeight.w800,color: appPrimaryColor,fontFamily: mainFontFamily);
-TextStyle mediumPrimaryTextStyle =  TextStyle(fontSize: 16 , fontWeight: FontWeight.w500, color: appPrimaryColor, fontFamily: mainFontFamily);
-TextStyle smallPrimaryTextStyle =  TextStyle(fontSize: 14 ,color: appPrimaryColor,fontFamily: mainFontFamily);
+TextStyle mainPrimaryTextStyle =   TextStyle(fontSize: 24.sp ,fontWeight: FontWeight.w800,color: appPrimaryColor,fontFamily: mainFontFamily);
+TextStyle mediumPrimaryTextStyle =  TextStyle(fontSize: 16.sp , fontWeight: FontWeight.w500, color: appPrimaryColor, fontFamily: mainFontFamily);
+TextStyle smallPrimaryTextStyle =  TextStyle(fontSize: 14.sp ,color: appPrimaryColor,fontFamily: mainFontFamily);
 
 // black
-TextStyle bigBlackTextStyle =    TextStyle(fontSize: 26 ,fontWeight: FontWeight.bold,color: Colors.black,fontFamily: mainFontFamily);
-TextStyle mainBlackTextStyle =   TextStyle(fontSize: 24 ,fontWeight: FontWeight.w600,color: Colors.black,fontFamily: mainFontFamily);
-TextStyle mediumBlackTextStyle =  TextStyle(fontSize: 16 ,color: Colors.black,fontWeight: FontWeight.w400,fontFamily: mainFontFamily, overflow: TextOverflow.ellipsis);
-TextStyle smallBlackTextStyle =  TextStyle(fontSize: 14 ,color: Colors.black,fontFamily: mainFontFamily);
+TextStyle bigBlackTextStyle =    TextStyle(fontSize: 26.sp ,fontWeight: FontWeight.bold,color: Colors.black,fontFamily: mainFontFamily);
+TextStyle mainBlackTextStyle =   TextStyle(fontSize: 24.sp ,fontWeight: FontWeight.w600,color: Colors.black,fontFamily: mainFontFamily);
+TextStyle mediumBlackTextStyle =  TextStyle(fontSize: 16.sp ,color: Colors.black,fontWeight: FontWeight.w400,fontFamily: mainFontFamily, overflow: TextOverflow.ellipsis);
+TextStyle smallBlackTextStyle =  TextStyle(fontSize: 14.sp ,color: Colors.black,fontFamily: mainFontFamily);
 
 // grey
-TextStyle bigGreyTextStyle =    TextStyle(fontSize: 26 ,fontWeight: FontWeight.bold,color: appGreyColor,fontFamily: mainFontFamily);
-TextStyle mainGreyTextStyle =   TextStyle(fontSize: 24 ,fontWeight: FontWeight.w800,color: appGreyColor,fontFamily: mainFontFamily);
-TextStyle mediumGreyTextStyle = TextStyle(fontSize: 16 , color: appGreyColor, fontFamily: mainFontFamily, overflow: TextOverflow.ellipsis);
-TextStyle smallGreyTextStyle =  TextStyle(fontSize: 14 ,color: appGreyColor,fontFamily: mainFontFamily);
+TextStyle bigGreyTextStyle =    TextStyle(fontSize: 26.sp ,fontWeight: FontWeight.bold,color: appGreyColor,fontFamily: mainFontFamily);
+TextStyle mainGreyTextStyle =   TextStyle(fontSize: 24.sp,fontWeight: FontWeight.w800,color: appGreyColor,fontFamily: mainFontFamily);
+TextStyle mediumGreyTextStyle = TextStyle(fontSize: 16.sp , color: appGreyColor, fontFamily: mainFontFamily, overflow: TextOverflow.ellipsis);
+TextStyle smallGreyTextStyle =  TextStyle(fontSize: 14.sp ,color: appGreyColor,fontFamily: mainFontFamily);
 
 // white
 TextStyle bigWhiteTextStyle =    TextStyle(fontSize: 26 ,fontWeight: FontWeight.bold,color: appWhiteColor,fontFamily: mainFontFamily);
@@ -60,13 +61,13 @@ TextStyle mediumWhiteTextStyle =  TextStyle(fontSize: 16 , fontWeight: FontWeigh
 TextStyle smallWhiteTextStyle =  TextStyle(fontSize: 14 , color: appWhiteColor, fontFamily: mainFontFamily);
 
 
-TextStyle bigTextStyle =    TextStyle(fontSize: 26 ,fontWeight: FontWeight.bold,fontFamily: mainFontFamily);
-TextStyle mainTextStyle =   TextStyle(fontSize: 24 ,fontWeight: FontWeight.w800,fontFamily: mainFontFamily);
-TextStyle mediumTextStyle =  TextStyle(fontSize: 16 , fontWeight: FontWeight.w500,fontFamily: mainFontFamily);
-TextStyle smallTextStyle =  TextStyle(fontSize: 14 , fontFamily: mainFontFamily);
+TextStyle bigTextStyle =    TextStyle(fontSize: 26.sp ,fontWeight: FontWeight.bold,fontFamily: mainFontFamily);
+TextStyle mainTextStyle =   TextStyle(fontSize: 24.sp ,fontWeight: FontWeight.w800,fontFamily: mainFontFamily);
+TextStyle mediumTextStyle =  TextStyle(fontSize: 16.sp , fontWeight: FontWeight.w500,fontFamily: mainFontFamily);
+TextStyle smallTextStyle =  TextStyle(fontSize: 12.sp , fontFamily: mainFontFamily);
 
-TextStyle smallHeaderTextStyle = TextStyle(fontFamily: mainFontFamily, fontSize: 15 , color: appPrimaryColor,);
-TextStyle bigHeaderTextStyle = TextStyle(color: appPrimaryColor, fontSize: 18 , fontWeight: FontWeight.w400);
+TextStyle smallHeaderTextStyle = TextStyle(fontFamily: mainFontFamily, fontSize: 15.sp , color: appPrimaryColor,);
+TextStyle bigHeaderTextStyle = TextStyle(color: appPrimaryColor, fontSize: 18.sp , fontWeight: FontWeight.w400);
 
 
 

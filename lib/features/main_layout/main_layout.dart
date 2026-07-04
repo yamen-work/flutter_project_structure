@@ -1,5 +1,6 @@
-import 'package:exercise_projects/Localization/l10n/app_localization.dart';
 import 'package:exercise_projects/core/widgets/drawer.dart';
+import 'package:exercise_projects/features/home/home_screen.dart';
+import 'package:exercise_projects/features/order/presentation/screens/order_history_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatefulWidget {
@@ -10,17 +11,18 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  List<Widget> screens = [Container(), Container(), Container()];
+  List<Widget> screens = [Container(), HomeScreen(), OrderHistory()];
 
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          AppLocalizations.of(context)!.session,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          "State Management",
+          style: TextStyle(color: Colors.white, fontSize:  22 ,fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.blue,
