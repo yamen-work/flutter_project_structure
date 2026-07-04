@@ -3,6 +3,8 @@ import 'package:exercise_projects/features/home/home_screen.dart';
 import 'package:exercise_projects/features/order/presentation/screens/order_history_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/routing/routing.dart';
+
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
 
@@ -22,8 +24,20 @@ class _MainLayoutState extends State<MainLayout> {
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           "State Management",
-          style: TextStyle(color: Colors.white, fontSize:  22 ,fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.cart);
+            },
+            icon: Icon(Icons.shopping_cart),
+          ),
+        ],
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -46,7 +60,10 @@ class _MainLayoutState extends State<MainLayout> {
           currentIndex: currentIndex,
           showSelectedLabels: true,
 
-          selectedLabelStyle: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
+          selectedLabelStyle: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
 
           selectedIconTheme: IconThemeData(color: Colors.blue),
 

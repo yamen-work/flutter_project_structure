@@ -8,7 +8,6 @@ class Cart extends ChangeNotifier {
     items.add(item);
     notifyListeners();
   }
-
   void remove(String item) {
     items.remove(item);
     notifyListeners();

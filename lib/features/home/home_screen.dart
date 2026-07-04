@@ -1,5 +1,8 @@
 import 'package:exercise_projects/core/widgets/my_custom_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../cart_screen/logic/cart_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<String> products = const ["Apple", "Banana", "Orange", "Grapes"];
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -19,50 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: width > 600 ? 32 : 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Container(
-              //   height: height*0.25,
-              //   decoration: BoxDecoration(
-              //     color: Colors.blue.withOpacity(0.6),
-              //     borderRadius: BorderRadius.circular(20),
-              //   ),
-              //
-              //   child: LayoutBuilder(
-              //     builder: (context, constraints) {
-              //       return Center(
-              //         child: Container(
-              //           height: constraints.maxHeight * 0.25,
-              //           width: width * 0.05,
-              //           decoration: BoxDecoration(
-              //             color: Colors.red,
-              //             borderRadius: BorderRadius.circular(20),
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: GridView.builder(
-              //     physics: NeverScrollableScrollPhysics(),
-              //     shrinkWrap: true,
-              //     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              //       maxCrossAxisExtent: 200,
-              //       mainAxisSpacing: 10,
-              //       crossAxisSpacing: 10
-              //     ),
-              //     itemCount: 12,
-              //     itemBuilder: (context, index) => Container(
-              //       decoration: BoxDecoration(color: Colors.green.withOpacity(0.4),
-              //       borderRadius: BorderRadius.circular(25)),
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
+        child: ListView(
+          children: products.map((product) {
+            return ListTile(
+              title: Text(product),
+              onTap: () {
+                context.read<Cart>().add(product); 
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$product added to cart")),
+                );
+              },
+            );
+          }).toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(

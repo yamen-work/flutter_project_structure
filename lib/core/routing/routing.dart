@@ -1,3 +1,4 @@
+import 'package:exercise_projects/features/cart_screen/presentation/cart_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -35,6 +36,9 @@ abstract class Routes
   static const String moreScreen = "/moreScreen";
   static const String favorites = "/favorites";
   static const String appUpdates = "/appUpdates";
+
+
+  static const String cart = "/shoppingCart";
 }
 
 bool isLoggedIn= false;
@@ -64,6 +68,12 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (_) => const RegisterScreen(),
         settings: const RouteSettings(name: Routes.register),
+      );
+
+    case Routes.cart:
+      return MaterialPageRoute(
+        builder: (_) => const CartScreen(),
+        settings: const RouteSettings(name: Routes.cart),
       );
 
 

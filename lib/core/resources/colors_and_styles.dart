@@ -11,6 +11,7 @@ const String mainFontFamily = "Tajawal";
 
 const Color appPrimaryColor = Colors.blue;
 const secondaryColor = Colors.greenAccent;
+
 const Color appWhiteColor = Color(0xffffffff);
 const Color appGreyColor = Color(0xffa1a1ae);
 const Color lightGreyColor = Color(0xfff2f2f5);
@@ -31,6 +32,26 @@ const Color instagramColor =Colors.pink;
 const Color twitterColor = Colors.blue;
 const Color snapChatColor = Colors.amber;
 const Color whatsappColor = Colors.green;
+
+
+
+///...........Colors For Themes.............
+Color bgColor = appWhiteColor;
+Color darkBgColor = const Color(0xff1d1e25);
+
+
+Color textWhite = const Color(0xffffffff);
+Color textDark = const Color(0xff000000);
+
+Color borderColor =  Colors.grey.shade200;
+Color darkBorderColor =  const Color(0xff2a323f);
+
+Color containerColor = const Color(0xffffffff);
+Color darkContainerColor = const Color(0xff262932);
+
+const Color  iconColor = const Color.fromARGB(255,212, 175, 55);
+Color  darkIconColor = const Color(0xffccccce);
+
 
 
 
