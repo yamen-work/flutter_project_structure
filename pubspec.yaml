@@ -45,6 +45,8 @@ dependencies:
   country_flags:
   flutter_screenutil:
   provider:
+  flutter_bloc:
+  equatable:
 
 
 dev_dependencies:
@@ -103,6 +105,8 @@ flutter:
           weight: 800
         - asset: assets/fonts/Tajawal-Black.ttf
           weight: 900
+
+
     - family: MyCustomIcons
       fonts:
         - asset: assets/fonts/my_custom_icons.ttf
