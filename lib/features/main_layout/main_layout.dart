@@ -1,3 +1,4 @@
+import 'package:exercise_projects/Localization/l10n/app_localization.dart';
 import 'package:exercise_projects/core/widgets/drawer.dart';
 import 'package:exercise_projects/features/home/home_screen.dart';
 import 'package:exercise_projects/features/order/presentation/screens/order_history_screen.dart';
@@ -23,7 +24,7 @@ class _MainLayoutState extends State<MainLayout> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          "State Management",
+          "State Saving",
           style: TextStyle(
             color: Colors.white,
             fontSize: 22,
@@ -78,10 +79,16 @@ class _MainLayoutState extends State<MainLayout> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: "Settings",
+              label: AppLocalizations.of(context)!.settings,
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: AppLocalizations.of(context)!.home,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: AppLocalizations.of(context)!.profile,
+            ),
           ],
         ),
       ),

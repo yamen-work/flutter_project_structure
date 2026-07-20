@@ -18,4 +18,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String total(Object ammount, Object amount) {
     return 'Your Total is $ammount Dollars ';
   }
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get settings => 'Settings';
 }

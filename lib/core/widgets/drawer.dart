@@ -2,7 +2,9 @@ import 'package:country_flags/country_flags.dart';
 import 'package:exercise_projects/Localization/l10n/app_localization.dart';
 import 'package:exercise_projects/core/widgets/restart_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../config/app_config.dart';
 import '../resources/colors_and_styles.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -13,16 +15,14 @@ class CustomDrawer extends StatelessWidget {
   final GlobalKey _chooseLanguageKey = GlobalKey();
 
 
- void changeLanguage(String code)async{
-    // SharedPreferences sharedPreferences =
-    // await SharedPreferences.getInstance();
-    // await sharedPreferences.setString(
-    //     'localization', code);
-  }
-
 
   @override
   Widget build(BuildContext context) {
+
+    final appConfig = Provider.of<AppConfig>(context, listen: true);
+
+
+
     return Container(
       width: 360,
       decoration: BoxDecoration(
@@ -62,8 +62,8 @@ class CustomDrawer extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: InkWell(
                             onTap: (){
-                              // changeLanguage("ar");
-                              RestartWidget.restartApp(context);
+
+                              appConfig.setLang("ar");
 
                             },
                             child: Row(
@@ -104,8 +104,9 @@ class CustomDrawer extends StatelessWidget {
                         value: 'English',
                         child: InkWell(
                           onTap: () {
-                            // changeLanguage("en");
-                            RestartWidget.restartApp(context);
+
+                            appConfig.setLang("en");
+
 
                           },
                           child: Row(

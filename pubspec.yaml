@@ -47,6 +47,7 @@ dependencies:
   provider:
   flutter_bloc:
   equatable:
+  shared_preferences: 
 
 
 dev_dependencies:

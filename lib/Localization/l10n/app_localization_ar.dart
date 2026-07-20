@@ -18,4 +18,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String total(Object ammount, Object amount) {
     return 'المجموع الخاص بك $amount ليرة';
   }
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get settings => 'الاعدادات';
 }

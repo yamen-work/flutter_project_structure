@@ -115,6 +115,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Total is {ammount} Dollars '**
   String total(Object ammount, Object amount);
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 }
 
 class _AppLocalizationsDelegate
