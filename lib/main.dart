@@ -3,6 +3,7 @@ import 'package:exercise_projects/core/routing/routing.dart';
 import 'package:exercise_projects/features/cart_screen/logic/cart_provider.dart';
 import 'package:exercise_projects/features/home/bloc/home_screen_cubit.dart';
 import 'package:exercise_projects/features/main_layout/main_layout.dart';
+import 'package:exercise_projects/features/products_screen/bloc/products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -39,22 +40,27 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context) => Cart())],
           child: Consumer<AppConfig>(
             builder: (context,value,child) {
-              return MaterialApp(
-                theme: ThemeData(
-                  colorScheme: .fromSeed(seedColor: Colors.blue),
-                  fontFamily: "Tajawal",
-                ),
-                debugShowCheckedModeBanner: false,
-                onGenerateRoute: onGenerateRoute,
-                home: MainLayout(),
-                locale: Locale(value.selectedLanguage),
-                supportedLocales: [Locale("en"), Locale("ar")],
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => ProductsBloc(),)
                 ],
+                child: MaterialApp(
+                  theme: ThemeData(
+                    colorScheme: .fromSeed(seedColor: Colors.blue),
+                    fontFamily: "Tajawal",
+                  ),
+                  debugShowCheckedModeBanner: false,
+                  onGenerateRoute: onGenerateRoute,
+                  home: MainLayout(),
+                  locale: Locale(value.selectedLanguage),
+                  supportedLocales: [Locale("en"), Locale("ar")],
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                  ],
+                ),
               );
             }
           ),

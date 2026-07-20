@@ -24,6 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+
+  Stream<int> stopwatchStream() async* {
+    int seconds = 0;
+    while (true) {
+      yield seconds;
+      await Future.delayed(const Duration(seconds: 1),);
+      seconds++;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -31,7 +42,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: width > 600 ? 32 : 20),
-        child: Container(),
+        child:  StreamBuilder<int>(
+          stream: stopwatchStream(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const CircularProgressIndicator();
+            }
+            final time = Duration(seconds: snapshot.data!);
+
+            return Center(
+              child: Text(
+                "${time.inHours} : ${time.inMinutes} : ${time.inSeconds}",
+                textDirection: TextDirection.ltr,
+                style: const TextStyle(fontSize: 40),
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
