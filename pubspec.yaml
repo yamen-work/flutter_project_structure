@@ -47,7 +47,12 @@ dependencies:
   provider:
   flutter_bloc:
   equatable:
-  shared_preferences: 
+  shared_preferences:
+  dio:
+  get:
+  file_picker:
+
+
 
 
 dev_dependencies:
