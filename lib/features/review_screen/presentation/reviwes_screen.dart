@@ -300,16 +300,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   final List<PlatformFile> _selectedImages = [];
 
 
-  Future<void> pickImages() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      File file = File(image.path);
-    } else {
-      // User canceled the picker
-    }
-  }
 
   @override
   void initState() {
