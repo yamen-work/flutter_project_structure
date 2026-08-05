@@ -7,6 +7,7 @@ import 'package:exercise_projects/features/review_screen/bloc/review_state.dart'
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/models/category.dart';
 import '../../../core/widgets/flushbar.dart';
 
@@ -18,6 +19,7 @@ class ReviewsPage extends StatefulWidget {
 }
 
 class _ReviewsPageState extends State<ReviewsPage> {
+
   List<PlatformFile> selectedImages = [];
 
   Future<void> pickImages() async {
@@ -296,6 +298,18 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   late TextEditingController messageController;
 
   final List<PlatformFile> _selectedImages = [];
+
+
+  Future<void> pickImages() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      File file = File(image.path);
+    } else {
+      // User canceled the picker
+    }
+  }
 
   @override
   void initState() {

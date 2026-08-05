@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import '../../../core/models/category.dart';
 import '../../../core/models/enums/state_value.dart';
@@ -21,6 +24,18 @@ class CategoryController extends GetxController {
   RxList<Category> topics = <Category>[].obs;
 
   RxString errorMessage = "".obs;
+
+
+  Future<void> pickImages()
+  async {
+
+    FilePickerResult? result = await FilePicker.pickFiles(allowMultiple: true);
+
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+    } else {
+    }
+  }
 
   Future<void> getTopics() async {
     try {
