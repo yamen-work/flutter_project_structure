@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:exercise_projects/core/errors/remote_excpetions.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import '../../../core/models/category.dart';
@@ -48,8 +49,8 @@ class CategoryController extends GetxController {
           .toList();
 
       getState.value = StateValue.loaded;
-    } catch (e) {
-      errorMessage.value = e.toString();
+    } on RemoteExceptions catch (e) {
+      errorMessage.value = e.errorMsg;
       getState.value = StateValue.error;
     }
   }

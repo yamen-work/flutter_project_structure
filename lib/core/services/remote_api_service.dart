@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../errors/error_handler.dart';
+
 class RemoteApiService {
 
   final Dio _dio = Dio(
@@ -22,7 +24,7 @@ class RemoteApiService {
     on DioError catch (e)
     {
       debugPrint("GET Error : ${e.message}");
-      rethrow;
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -37,7 +39,8 @@ class RemoteApiService {
     on DioError catch (e)
     {
       debugPrint("POST Error : ${e.message}");
-      rethrow;
+      throw ErrorHandler.handle(e);
+
     }
   }
 
@@ -52,7 +55,7 @@ class RemoteApiService {
     on DioError catch (e)
     {
       debugPrint("PUT Error : ${e.message}");
-      rethrow;
+      throw ErrorHandler.handle(e);
     }
   }
 
@@ -67,6 +70,8 @@ class RemoteApiService {
     on DioError catch (e)
     {
       debugPrint("PUT Error : ${e.message}");
+      throw ErrorHandler.handle(e);
+
       rethrow;
     }
   }
@@ -84,10 +89,11 @@ class RemoteApiService {
         Response response = await _dio.post(endpoint, data: formData);
 
         return response;
-      } on DioError catch (e) {
+      } on DioException catch (e) {
 
         debugPrint("POST FORM DATA Error: ${e.message}");
-        rethrow;
+        throw ErrorHandler.handle(e);
+
       }
     }
 
@@ -103,7 +109,8 @@ class RemoteApiService {
     } on DioError catch (e) {
 
       debugPrint("POST FORM DATA Error: ${e.message}");
-      rethrow;
+      throw ErrorHandler.handle(e);
+
     }
   }
 

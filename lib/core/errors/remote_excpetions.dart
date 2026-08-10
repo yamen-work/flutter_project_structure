@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'error_code.dart';
 
 class RemoteExceptions implements Exception {
+
   final ErrorCode errorCode;
   final String errorMsg;
+
+
   final Response? response;
 
   const RemoteExceptions(

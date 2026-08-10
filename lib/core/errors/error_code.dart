@@ -27,9 +27,14 @@ enum ErrorCode {
 }
 
 extension ErrorCodeLocalization on ErrorCode {
+
   String getLocalizedMessage() {
-    final messages =  errorMessages['en']!;
-    return messages[this] ??
-        messages[ErrorCode.UNKNOWN]!;
+
+    final languageMessages =  errorMessages['en']!;
+
+
+    return languageMessages[this] ?? languageMessages[ErrorCode.UNKNOWN]!;
   }
+
+
 }

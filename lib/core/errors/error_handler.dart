@@ -3,10 +3,13 @@ import 'error_code.dart';
 import 'remote_excpetions.dart';
 
 class ErrorHandler {
+
+
   const ErrorHandler._();
 
   /// Converts any supported exception into a [RemoteExceptions].
   static RemoteExceptions handle(Object error) {
+
     if (error is RemoteExceptions) {
       return error;
     }
@@ -33,6 +36,7 @@ class ErrorHandler {
 
   /// Handles all Dio exceptions.
   static RemoteExceptions _handleDio(DioException e) {
+
     final response = e.response;
 
     // Server responded with an HTTP status code.
@@ -80,11 +84,14 @@ class ErrorHandler {
 
   /// Converts an HTTP response into a RemoteExceptions.
   static RemoteExceptions _fromResponse(Response response) {
-    final errorCode = _mapStatusCode(response.statusCode ?? -1);
+
+    final errorCode = _mapStatusCode(response.statusCode ??-1 );
+
+    final String errorMessage =  _extractServerMessage(response) ?? errorCode.getLocalizedMessage();
 
     return RemoteExceptions(
       errorCode,
-      _extractServerMessage(response) ?? errorCode.getLocalizedMessage(),
+      errorMessage,
       response: response,
     );
   }
@@ -107,6 +114,7 @@ class ErrorHandler {
 
   /// Attempts to extract a readable error message from the server response.
   static String? _extractServerMessage(Response response) {
+
     final data = response.data;
 
     if (data is! Map) {
@@ -122,6 +130,10 @@ class ErrorHandler {
     if (data['error'] is Map &&
         data['error']['message'] is String) {
       return data['error']['message'] as String;
+    }
+
+    if (data['error_message'] is String) {
+      return data['error_message'] as String;
     }
 
     return null;
