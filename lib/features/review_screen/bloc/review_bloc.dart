@@ -18,9 +18,9 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     try {
       emit(state.copyWith(getState: StateValue.loading));
 
-      final Response response = await service.getRequest("/feedbacks/");
+      final Response response = await service.getRequest("/feedbacks/",requiresToken: true);
 
-      List<ReviewModel> reviews = (response.data["info"] as List)
+      List<ReviewModel> reviews = (response.data["info_data"] as List)
           .map((index) => ReviewModel.fromJson(index))
           .toList();
 

@@ -1,9 +1,17 @@
 import 'package:exercise_projects/core/resources/colors_and_styles.dart';
 import 'package:exercise_projects/core/routing/routing.dart';
 import 'package:exercise_projects/core/validatiors/email_validator.dart';
+import 'package:exercise_projects/features/category_screen/presentation/categories_screen.dart';
+import 'package:exercise_projects/features/review_screen/presentation/reviwes_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../Localization/l10n/app_localization.dart';
+import '../../../../core/models/enums/state_value.dart';
 import '../../../../core/widgets/flushbar.dart';
+import '../../../../core/widgets/main_button.dart';
+import '../../bloc/auth_cubit.dart';
+import '../../bloc/auth_state.dart';
 import '../widgets/outline_border.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -149,36 +157,49 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 30.h),
 
-            Container(
-              height: 60.h,
-              width: 400.w,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: MaterialButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    showSimpleFlushBar(
+            BlocConsumer<AuthCubit, AuthState>(
+              buildWhen: (previous, current) =>
+              current.loginState != previous.loginState,
+              listenWhen: (previous, current) =>
+              current.loginState != previous.loginState,
+              listener: (context, state) async{
+                if (state.loginState == StateValue.loaded) {
+
+
+                  await showSimpleFlushBar(
                       context,
-                      "You have logged in successfully",
-                      "welcome back",
-                      Icons.waving_hand,
-                      Colors.green,
-                    ).then((value) {
-                      Navigator.pushNamed(context, Routes.mainLayout);
-                    });
-                  }
-                },
-                child: Text(
-                  "Sign In",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                      "welcome back", "", Icons.check_circle_outline, successColor);
+
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => TopicPage(),), (Route<dynamic> route) => false,);
+
+
+
+                }
+
+                if (state.loginState == StateValue.error) {
+
+                  await showSimpleFlushBar(context, state.loginMessage, "",
+                      Icons.error_outline_outlined, errorColor);
+
+                }
+              },
+              builder: (context, state) {
+                if (state.loginState == StateValue.loading) {
+                  return MainButton(
+                    name: "",
+                    onTap: () {},
+                    isLoading: true,
+                  );
+                } else {
+                  return MainButton(
+                      name: "Login",
+                      onTap: () {
+                        if (formKey.currentState!.validate()) {
+                          BlocProvider.of<AuthCubit>(context).login(emailController.text, passwordController.text);
+                        }
+                      });
+                }
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -303,37 +324,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 30.h),
 
-                Container(
-                  height: 60.h,
-                  width: 400.w,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: MaterialButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        showSimpleFlushBar(
+                BlocConsumer<AuthCubit, AuthState>(
+                  buildWhen: (previous, current) =>
+                  current.loginState != previous.loginState,
+                  listenWhen: (previous, current) =>
+                  current.loginState != previous.loginState,
+                  listener: (context, state) async{
+                    if (state.loginState == StateValue.loaded) {
+
+
+                      await showSimpleFlushBar(
                           context,
-                          "You have logged in successfully",
-                          "welcome back",
-                          Icons.waving_hand,
-                          Colors.green,
-                        ).then((value) {
-                          Navigator.pushNamed(context, Routes.mainLayout);
-                        });
-                      }
-                    },
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                          "welcome back", "", Icons.check_circle_outline, successColor);
+
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => TopicPage(),), (Route<dynamic> route) => false,);
+
+
+
+                    }
+
+                    if (state.loginState == StateValue.error) {
+
+                      await showSimpleFlushBar(context, state.loginMessage, "",
+                          Icons.error_outline_outlined, errorColor);
+
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state.loginState == StateValue.loading) {
+                      return MainButton(
+                        name: "",
+                        onTap: () {},
+                        isLoading: true,
+                      );
+                    } else {
+                      return MainButton(
+                          name: "Login",
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              BlocProvider.of<AuthCubit>(context).login(emailController.text, passwordController.text);
+                            }
+                          });
+                    }
+                  },
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

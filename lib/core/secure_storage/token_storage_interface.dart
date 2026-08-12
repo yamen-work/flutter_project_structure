@@ -1,0 +1,8 @@
+abstract class TokenStorage {
+
+  Future<String?> getAccessToken();
+
+  Future<void> saveAccessToken(String token);
+
+  Future<void> clearAccessToken();
+}

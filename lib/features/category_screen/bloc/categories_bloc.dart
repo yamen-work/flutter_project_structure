@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:exercise_projects/features/category_screen/bloc/categories_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/errors/error_code.dart';
 import '../../../core/models/category.dart';
 import '../../../core/models/enums/state_value.dart';
 import '../../../core/services/remote_api_service.dart';
@@ -17,16 +18,16 @@ class CategoriesCubit extends Cubit<CategoriesState> {
 
       emit(state.copyWith(getState: StateValue.loading));
 
-      final  Response response = await service.getRequest("/topics/");
+      final  Response response = await service.getRequest("/topics/topics/",requiresToken: true);
 
       List<Category> categories =
 
-      (response.data  ["data"] as List)   .map(    (index) =>  Category.fromJson(index)   ).toList();
+      (response.data  ["info_data"] as List)   .map(    (index) =>  Category.fromJson(index)   ).toList();
 
       emit(state.copyWith(getState: StateValue.loaded, topics: categories));
 
     } catch (e) {
-      emit(state.copyWith(getState: StateValue.error, getError: e.toString()));
+      emit(state.copyWith(getState: StateValue.error, getError: ErrorCode.APP_ERROR.getLocalizedMessage()));
     }
   }
 
