@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/main_layout/main_layout.dart';
+import '../../features/notifications/notifications_screen.dart';
 
 
 abstract class Routes
@@ -76,6 +77,12 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
         settings: const RouteSettings(name: Routes.cart),
       );
 
+
+    case Routes.notifications:
+      return MaterialPageRoute(
+        builder: (_) => const NotificationsScreen(),
+        settings: const RouteSettings(name: Routes.notifications),
+      );
 
     // case Routes.profile:
     //   if (!isLoggedIn) {

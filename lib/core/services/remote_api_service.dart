@@ -8,7 +8,7 @@ import '../network/auth_interceptor.dart';
 class RemoteApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'https://yamen146.pythonanywhere.com',
+      baseUrl: 'https://jsonplaceholder.typicode.com',
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
     ),

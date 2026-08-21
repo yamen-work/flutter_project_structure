@@ -20,7 +20,6 @@ class ColorProvider extends ChangeNotifier{
   }
 
 
-
   void changeTheme()
   {
     isDark = !isDark;
