@@ -1,8 +1,16 @@
 import 'package:exercise_projects/core/validatiors/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/models/enums/state_value.dart';
+import '../../../../core/resources/colors_and_styles.dart';
 import '../../../../core/widgets/flushbar.dart';
+import '../../../../core/widgets/main_button.dart';
+import '../../../category_screen/presentation/categories_screen.dart';
+import '../../bloc/auth_cubit.dart';
+import '../../bloc/auth_state.dart';
 import '../widgets/outline_border.dart';
+import 'forget_password.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,7 +20,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
   /// TextField controllers
   ///
   final TextEditingController nameController = TextEditingController();
@@ -23,7 +30,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
   bool isHidden = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +54,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Center(
                   child: Text(
                     "Make An Account",
-                    style: TextStyle(fontSize: 40, color: Colors.black,fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -83,10 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: InputDecoration(
                 isDense: true,
                 errorStyle: TextStyle(fontSize: 12, color: Colors.red),
-                prefixIcon: Icon(
-                  Icons.person,
-                  size: 30,
-                ),
+                prefixIcon: Icon(Icons.person, size: 30),
                 border: outlineBorder(borderColor: Colors.grey[100]!),
                 focusedBorder: outlineBorder(borderColor: Colors.blue),
                 disabledBorder: outlineBorder(),
@@ -95,11 +102,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
               validator: (value) {
                 if ((value ?? '').isEmpty) {
-                  return "Enter An Email";
-                } else if (!EmailValidator.validate(value!)) {
-                  return "Enter A Valid Email";
-                }
-                else {
+                  return "Enter A Name";
+
+                } else {
                   return null;
                 }
               },
@@ -119,10 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               decoration: InputDecoration(
                 isDense: true,
                 errorStyle: TextStyle(fontSize: 12, color: Colors.red),
-                prefixIcon: Icon(
-                  Icons.email,
-                  size: 30,
-                ),
+                prefixIcon: Icon(Icons.email, size: 30),
                 border: outlineBorder(borderColor: Colors.grey[100]!),
                 focusedBorder: outlineBorder(borderColor: Colors.blue),
                 disabledBorder: outlineBorder(),
@@ -181,78 +183,76 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 return null;
               },
             ),
-            SizedBox(height:30),
-            Container(
-              height: 60,
-              width: 400,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: MaterialButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
+            SizedBox(height: 30),
+            BlocConsumer<AuthCubit, AuthState>(
+              buildWhen: (previous, current) =>
+                  current.registerState != previous.registerState,
+              listenWhen: (previous, current) =>
+                  current.registerState != previous.registerState,
+              listener: (context, state) async {
+                if (state.registerState == StateValue.loaded) {
+                  await showSimpleFlushBar(
+                    context,
+                    "welcome!!",
+                    "",
+                    Icons.check_circle_outline,
+                    successColor,
+                  );
 
-                    showSimpleFlushBar(
-                        context,
-                        "You have logged in successfully",
-                        "welcome back",
-                        Icons.waving_hand,
-                        Colors.green
-                    );
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => TopicPage()),
+                    (Route<dynamic> route) => false,
+                  );
+                }
 
-                  }
-                },
-                child: Text(
-                  "Sign In",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                if (state.registerState == StateValue.error) {
+                  await showSimpleFlushBar(
+                    context,
+                    state.registerMessage,
+                    "",
+                    Icons.error_outline_outlined,
+                    errorColor,
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state.registerState == StateValue.loading) {
+                  return MainButton(name: "", onTap: () {}, isLoading: true);
+                } else {
+                  return MainButton(
+                    name: "Register",
+                    onTap: () {
+                      if (formKey.currentState!.validate()) {
+                        BlocProvider.of<AuthCubit>(context).register(
+                          name: nameController.text,
+                          email: emailController.text,
+                          password: passwordController.text,
+                          age: 20,
+                        );
+                      }
+                    },
+                  );
+                }
+              },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(
-                    5,
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot Password",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: EdgeInsets.all(5),
-                  child: Text(
-                    "Don't Have An Account ?",
-                    style: TextStyle(
-                      fontSize:16,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontSize:16,
-                      color: Colors.blue,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ForgetPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                   ),
                 ),

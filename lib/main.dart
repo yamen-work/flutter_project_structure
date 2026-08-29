@@ -1,6 +1,7 @@
 import 'package:exercise_projects/core/bindings/app_bindings.dart';
 import 'package:exercise_projects/core/config/app_config.dart';
 import 'package:exercise_projects/core/routing/routing.dart';
+import 'package:exercise_projects/core/services/firebase/firebase_service.dart';
 import 'package:exercise_projects/core/services/remote_api_service.dart';
 import 'package:exercise_projects/features/auth/bloc/auth_cubit.dart';
 import 'package:exercise_projects/features/auth/presentation/screens/login_screen.dart';
@@ -13,7 +14,7 @@ import 'package:exercise_projects/features/review_screen/bloc/review_bloc.dart';
 import 'package:exercise_projects/features/users/presentation/users_screen.dart';
 import 'package:exercise_projects/features/users/presentation/users_screen_getx.dart';
 import 'package:exercise_projects/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart' hide FirebaseService;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +35,7 @@ import 'features/users/data/data_sources/remote_data_source.dart';
 import 'features/users/data/reposititories/users_repo_implementation.dart';
 import 'features/users/domain/repositories_interfaces/users_repo_interface.dart';
 import 'features/users/domain/use_cases/get_users_use_case.dart';
+import 'core/services/firebase/firebase_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -44,9 +46,9 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onBackgroundMessage(
@@ -141,8 +143,11 @@ class MyApp extends StatelessWidget {
                 providers: [
                   BlocProvider(create: (context) => CategoriesCubit(service: context.read<RemoteApiService>()),),
                   BlocProvider(create: (context) => ReviewsCubit(service: context.read<RemoteApiService>()),),
-                  BlocProvider(create: (context) => AuthCubit(remoteDatasource: context.read<AuthRemoteDataSource>()),),
-
+                  BlocProvider<AuthCubit>(
+                    create: (context) => AuthCubit(
+                      firebaseService: FirebaseService.instance,
+                    ),
+                  ),
                   BlocProvider<UsersCubit>(
                     create: (context) {
                       return UsersCubit(
@@ -160,7 +165,7 @@ class MyApp extends StatelessWidget {
                   ),
                   debugShowCheckedModeBanner: false,
                   initialBinding: AppBindings(),
-                  home: UsersScreen(),
+                  home:FirebaseService.instance.currentUser!=null?MainLayout(): LoginScreen(),
                   locale: Locale(value.selectedLanguage),
                   onGenerateRoute: onGenerateRoute,
                   supportedLocales: [Locale("en"), Locale("ar")],

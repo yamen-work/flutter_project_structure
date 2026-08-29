@@ -8,17 +8,22 @@ enum ErrorCode {
   NOT_FOUND,
   UNPROCESSABLE_ENTITY,
   SERVER_ERROR,
-
   // Network Errors
   NO_INTERNET_CONNECTION,
   TIMEOUT,
   CANCEL,
   BAD_CERTIFICATE,
-
   // Business Errors
   PENDING_APPROVAL,
   NOT_EXIST_ACCOUNT,
   EXIST,
+
+  // Firebase Authentication Errors
+  INVALID_EMAIL,
+  WRONG_PASSWORD,
+  EMAIL_ALREADY_IN_USE,
+  WEAK_PASSWORD,
+
 
   // Application Errors
   APP_ERROR,
@@ -27,14 +32,8 @@ enum ErrorCode {
 }
 
 extension ErrorCodeLocalization on ErrorCode {
-
   String getLocalizedMessage() {
-
-    final languageMessages =  errorMessages['en']!;
-
-
+    final languageMessages = errorMessages['en']!;
     return languageMessages[this] ?? languageMessages[ErrorCode.UNKNOWN]!;
   }
-
-
 }

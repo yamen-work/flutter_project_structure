@@ -1,15 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'error_code.dart';
 import 'remote_excpetions.dart';
 
 class ErrorHandler {
-
-
   const ErrorHandler._();
 
   /// Converts any supported exception into a [RemoteExceptions].
   static RemoteExceptions handle(Object error) {
-
     if (error is RemoteExceptions) {
       return error;
     }
@@ -18,15 +16,9 @@ class ErrorHandler {
       return _handleDio(error);
     }
 
-    // Future extensions:
-    //
-    // if (error is FirebaseException) {
-    //   return _handleFirebase(error);
-    // }
-    //
-    // if (error is SocketException) {
-    //   return _handleSocket(error);
-    // }
+    if (error is FirebaseException) {
+      return _handleFirebase(error);
+    }
 
     return RemoteExceptions(
       ErrorCode.APP_ERROR,
@@ -34,17 +26,14 @@ class ErrorHandler {
     );
   }
 
-  /// Handles all Dio exceptions.
-  static RemoteExceptions _handleDio(DioException e) {
 
+  static RemoteExceptions _handleDio(DioException e) {
     final response = e.response;
 
-    // Server responded with an HTTP status code.
     if (response != null) {
       return _fromResponse(response);
     }
 
-    // No response received. Usually a connection issue.
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
@@ -82,12 +71,14 @@ class ErrorHandler {
     }
   }
 
-  /// Converts an HTTP response into a RemoteExceptions.
   static RemoteExceptions _fromResponse(Response response) {
+    final errorCode = _mapStatusCode(
+      response.statusCode ?? -1,
+    );
 
-    final errorCode = _mapStatusCode(response.statusCode ??-1 );
-
-    final String errorMessage =  _extractServerMessage(response) ?? errorCode.getLocalizedMessage();
+    final String errorMessage =
+        _extractServerMessage(response) ??
+        errorCode.getLocalizedMessage();
 
     return RemoteExceptions(
       errorCode,
@@ -96,7 +87,6 @@ class ErrorHandler {
     );
   }
 
-  /// Maps HTTP status codes to application error codes.
   static ErrorCode _mapStatusCode(int statusCode) {
     return switch (statusCode) {
       400 => ErrorCode.BAD_REQUEST,
@@ -106,27 +96,27 @@ class ErrorHandler {
       408 => ErrorCode.TIMEOUT,
       409 => ErrorCode.PENDING_APPROVAL,
       422 => ErrorCode.UNPROCESSABLE_ENTITY,
-      426 => ErrorCode.NOT_EXIST_ACCOUNT, // API-specific
-      500 || 501 || 502 || 503 || 504 => ErrorCode.SERVER_ERROR,
+      426 => ErrorCode.NOT_EXIST_ACCOUNT,
+      500 ||
+      501 ||
+      502 ||
+      503 ||
+      504 => ErrorCode.SERVER_ERROR,
       _ => ErrorCode.UNKNOWN,
     };
   }
 
-  /// Attempts to extract a readable error message from the server response.
   static String? _extractServerMessage(Response response) {
-
     final data = response.data;
 
     if (data is! Map) {
       return null;
     }
 
-    // { "message": "..." }
     if (data['message'] is String) {
       return data['message'] as String;
     }
 
-    // { "error": { "message": "..." } }
     if (data['error'] is Map &&
         data['error']['message'] is String) {
       return data['error']['message'] as String;
@@ -139,4 +129,77 @@ class ErrorHandler {
     return null;
   }
 
+  // FIREBASE
+  static RemoteExceptions _handleFirebase(FirebaseException e) {
+    switch (e.code) {
+      // Firebase Authentication
+      case 'invalid-email':
+        return RemoteExceptions(
+          ErrorCode.INVALID_EMAIL,
+          ErrorCode.INVALID_EMAIL.getLocalizedMessage(),
+        );
+
+      case 'wrong-password':
+        return RemoteExceptions(
+          ErrorCode.WRONG_PASSWORD,
+          ErrorCode.WRONG_PASSWORD.getLocalizedMessage(),
+        );
+
+      case 'email-already-in-use':
+        return RemoteExceptions(
+          ErrorCode.EMAIL_ALREADY_IN_USE,
+          ErrorCode.EMAIL_ALREADY_IN_USE.getLocalizedMessage(),
+        );
+
+      case 'weak-password':
+        return RemoteExceptions(
+          ErrorCode.WEAK_PASSWORD,
+          ErrorCode.WEAK_PASSWORD.getLocalizedMessage(),
+        );
+
+      case 'user-not-found':
+        return RemoteExceptions(
+          ErrorCode.NOT_EXIST_ACCOUNT,
+          ErrorCode.NOT_EXIST_ACCOUNT.getLocalizedMessage(),
+        );
+
+      case 'invalid-credential':
+        return RemoteExceptions(
+          ErrorCode.UNAUTHENTICATED,
+          ErrorCode.UNAUTHENTICATED.getLocalizedMessage(),
+        );
+
+      // Firestore
+      case 'permission-denied':
+        return RemoteExceptions(
+          ErrorCode.FORBIDDEN,
+          ErrorCode.FORBIDDEN.getLocalizedMessage(),
+        );
+
+      case 'not-found':
+        return RemoteExceptions(
+          ErrorCode.NOT_FOUND,
+          ErrorCode.NOT_FOUND.getLocalizedMessage(),
+        );
+
+      case 'unauthenticated':
+        return RemoteExceptions(
+          ErrorCode.UNAUTHENTICATED,
+          ErrorCode.UNAUTHENTICATED.getLocalizedMessage(),
+        );
+
+      case 'unavailable':
+        return RemoteExceptions(
+          ErrorCode.NO_INTERNET_CONNECTION,
+          ErrorCode.NO_INTERNET_CONNECTION.getLocalizedMessage(),
+        );
+
+      default:
+        return RemoteExceptions(
+          ErrorCode.UNKNOWN,
+          e.message ??
+              ErrorCode.UNKNOWN.getLocalizedMessage(),
+        );
+    }
+  }
 }
