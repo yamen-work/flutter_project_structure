@@ -52,6 +52,7 @@ dependencies:
   get:
   file_picker:
   image_picker:
+  bloc_test:
 
 
 

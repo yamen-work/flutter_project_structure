@@ -24,6 +24,7 @@ jobs:
       - name: Run tests
         run: flutter test
 
+# CD (continuous deployment) starts here
       - name: Build APK
         run: flutter build apk --release
 

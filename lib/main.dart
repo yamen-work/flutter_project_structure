@@ -1,85 +1,75 @@
-import 'package:exercise_projects/core/bindings/app_bindings.dart';
-import 'package:exercise_projects/core/config/app_config.dart';
-import 'package:exercise_projects/core/routing/routing.dart';
-import 'package:exercise_projects/core/services/remote_api_service.dart';
-import 'package:exercise_projects/features/cart_screen/logic/cart_provider.dart';
-import 'package:exercise_projects/features/category_screen/presentation/categories_screen.dart';
-import 'package:exercise_projects/features/category_screen_getx/presentation/topics_screen.dart';
-import 'package:exercise_projects/features/home/bloc/home_screen_cubit.dart';
-import 'package:exercise_projects/features/main_layout/main_layout.dart';
-import 'package:exercise_projects/features/review_screen/bloc/review_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import 'Localization/l10n/app_localization.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'features/category_screen/bloc/categories_bloc.dart';
-import 'features/review_screen/presentation/reviwes_screen.dart';
+import 'features/products/data/repositories/products_repository.dart';
+import 'features/products/presentation/cubit/products_cubit.dart';
+import 'features/products/presentation/cubit/products_state.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  AppConfig appConfig = AppConfig();
-  await appConfig.init();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: appConfig),
-
-        Provider<RemoteApiService>(create: (context) => RemoteApiService()),
-
-      ],
-      child: const MyApp(),
-    ),
-  );
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(390, 888),
-      builder: (context, child) {
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => Cart())],
-          child: Consumer<AppConfig>(
-            builder: (context,value,child) {
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(create: (context) => CategoriesCubit(service: context.read<RemoteApiService>()),),
-                  BlocProvider(create: (context) => ReviewsCubit(service: context.read<RemoteApiService>()),)
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'CI/CD Demo',
+      home: BlocProvider(
+        create: (_) => ProductsCubit(
+          ProductsRepository(),
+        )..getProducts(),
+        child: const ProductsPage(),
+      ),
+    );
+  }
+}
 
-                ],
-                child: GetMaterialApp(
-                  theme: ThemeData(
-                    colorScheme: .fromSeed(seedColor: Colors.blue),
-                    fontFamily: "Tajawal",
-                  ),
-                  debugShowCheckedModeBanner: false,
-                  initialBinding: AppBindings(),
-                  home: ReviewsPage(),
-                  locale: Locale(value.selectedLanguage),
-                  supportedLocales: [Locale("en"), Locale("ar")],
-                  localizationsDelegates: const [
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                ),
-              );
-            }
-          ),
-        );
-      },
+class ProductsPage extends StatelessWidget {
+  const ProductsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Products'),
+      ),
+      body: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state is ProductsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (state is ProductsSuccess) {
+            return ListView.builder(
+              itemCount: state.products.length,
+              itemBuilder: (context, index) {
+                final product = state.products[index];
+
+                return ListTile(
+                  title: Text(product.name),
+                  subtitle: Text('\$${product.price}'),
+                );
+              },
+            );
+          }
+
+          if (state is ProductsError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+
+          return const SizedBox();
+        },
+      ),
     );
   }
 }
